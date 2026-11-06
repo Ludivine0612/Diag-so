@@ -1,0 +1,3216 @@
+/* --- VARIABLES OFFICIELLES AIRBUS --- */
+:root {
+    --blue: #00205b;      /* Midnight Blue Airbus */
+    --sky: #00a1e0;       /* Airbus Light Blue */
+    --gold: #ffcc00;      /* Or pour les scores/temps fort */
+    --white: #ffffff;
+    --danger: #ff4757;
+    --success: #2ed573; /* Le vert "Airbus" vif pour les validations */
+    --glass-bg: rgba(0, 32, 91, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --blink-speed: 2.5s; /* Vitesse par défaut */
+}
+
+/* --- STRUCTURE GÉNÉRALE --- */
+* { box-sizing: border-box; }
+
+
+/* --- ANIMATION SLOGAN (EFFET RADAR AFFIRMÉ ET VISIBLE) --- */
+@keyframes slogan-radar-pulse {
+    0% {
+        opacity: 0.15; /* Presque invisible */
+        text-shadow: 0 0 5px rgba(0, 161, 224, 0.2); /* Glow très faible */
+        color: rgba(255, 255, 255, 0.3); /* Couleur affadie */
+    }
+    40% {
+        opacity: 1; /* Pleine brillance */
+        text-shadow: 0 0 20px var(--sky), 0 0 10px rgba(255, 255, 255, 0.6); /* Glow intense et flash blanc */
+        color: var(--sky); /* Pleine couleur Bleu Sky */
+    }
+    60% {
+        opacity: 1; /* Reste brillant un court instant */
+        text-shadow: 0 0 20px var(--sky), 0 0 10px rgba(255, 255, 255, 0.6);
+        color: var(--sky);
+    }
+    100% {
+        opacity: 0.15; /* Redescend */
+        text-shadow: 0 0 5px rgba(0, 161, 224, 0.2);
+        color: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Slogan - On le rend plus fin et technique */
+.airbus-slogan {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--sky); /* Bleu ciel Airbus */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    /* On ajoute une petite animation "radar" */
+    animation: slogan-radar-pulse 4s infinite ease-in-out;
+}
+
+/* Style pour la carte "Accord Majeur" */
+.gold-border {
+    border: 2px solid var(--gold) !important;
+    background: rgba(255, 215, 0, 0.05) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+
+.gold-border h3 {
+    color: var(--gold) !important;
+}
+
+
+/* Animation pour l'icône de l'accord */
+.gold-border .rule-icon {
+    animation: icon-float 2s infinite ease-in-out;
+}
+
+
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.1); }
+}
+
+
+/* Mise en évidence des mots importants */
+.rule-card {
+    background: rgba(255, 204, 0, 0.05) !important; /* Fond jaune très léger */
+    border: 2px solid var(--gold) !important;        /* Bordure Jaune/Or imposée */
+    border-radius: 15px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.1);    /* Petite lueur jaune */
+}
+
+
+.gold-border b {
+    color: var(--gold);
+}
+
+
+@keyframes icon-pulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--gold)); }
+    50% { transform: scale(1.2); filter: drop-shadow(0 0 15px var(--gold)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--gold)); }
+}
+
+
+/* Style spécifique pour le manuel */
+
+.gold-border b {
+    color: var(--gold);
+}
+
+body, html {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    font-family: 'Poppins', sans-serif;
+   
+    /* On empile les couches du haut vers le bas : */
+    background:
+        /* 1. Le dégradé de lumière au centre */
+        radial-gradient(circle at center, rgba(0, 161, 224, 0.2) 0%, transparent 85%),
+        /* 2. Le motif d'icônes (on baisse l'opacité à 0.02 pour la discrétion) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='white' fill-opacity='0.02'%3E%3Cpath d='M20 25 h30 a5 5 0 0 1 5 5 v15 a5 5 0 0 1-5 5 h-20 l-10 10 v-10 a5 5 0 0 1-5-5 v-15 a5 5 0 0 1 5-5' /%3E%3Ccircle cx='75' cy='65' r='8' /%3E%3Cpath d='M60 90 q15-15 30 0' /%3E%3C/g%3E%3C/svg%3E"),
+        /* 3. La couleur de fond unie Airbus qui bloque tout en dessous */
+        var(--blue);
+
+    background-attachment: fixed;
+    background-size: 100% 100%, 150px 150px, auto;
+    background-repeat: no-repeat, repeat, no-repeat;
+   
+    color: var(--white);
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden;
+}
+
+/* DESIGN DU TOAST NOTIFICATION */
+#toast-notification {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 40px;
+    background: rgba(0, 32, 91, 0.95); /* Bleu Airbus Opaque */
+    color: var(--gold);
+    border: 3px solid var(--gold);
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1.5rem;
+    z-index: 10000;
+    pointer-events: none;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.5);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.toast-hidden {
+    opacity: 0;
+    top: 15% !important;
+}
+
+.toast-visible {
+    opacity: 1;
+    top: 25% !important;
+}
+
+/* ANIMATION CONFETTIS */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    opacity: 0.8;
+    border-radius: 2px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* BANDEAU D'ALERTE HUD - CORRECTION FINALE */
+.alert-banner {
+    color: white;
+    padding: 10px 30px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+    z-index: 100;
+   
+    /* --- LE FIX POUR LE CENTRAGE --- */
+    display: flex !important;       /* On passe en flex pour centrer le texte dedans */
+    align-items: center;
+    justify-content: center;
+   
+    margin: 0 auto 15px auto !important; /* Force le centrage dans le parent */
+    position: relative !important;   /* S'assure qu'il suit le flux du conteneur */
+    left: 0 !important;              /* Reset d'un éventuel décalage */
+   
+    /* Dimensions */
+    width: fit-content !important;  
+    min-width: 300px;
+    max-width: 90%;
+}
+
+/* --- ANIMATION DE CLIGNOTEMENT POUR LES SMILEYS --- */
+@keyframes smiley-blink {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1); /* Légère pulsation */
+        filter: drop-shadow(0 0 15px var(--sky)); /* Lueur bleue ciel */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+    }
+}
+
+/* Application du clignotement à TOUTES les icônes (rule-icon-box) */
+.rule-icon-box {
+    display: inline-block; /* Nécessaire pour l'animation scale */
+    animation: smiley-blink var(--blink-speed) infinite ease-in-out;
+    will-change: opacity, transform, filter; /* Optimisation pour le navigateur */
+}
+
+/* Optionnel : On décale un peu les animations pour ne pas qu'elles soient toutes synchronisées */
+.rules-grid-new .rule-card-new:nth-child(2) .rule-icon-box { animation-delay: 0.5s; }
+.rules-grid-new .rule-card-new:nth-child(3) .rule-icon-box { animation-delay: 1s; }
+.rules-grid-new .rule-card-new:nth-child(4) .rule-icon-box { animation-delay: 1.5s; }
+.rules-grid-new .rule-card-new:nth-child(5) .rule-icon-box { animation-delay: 2s; }
+
+/* On garde l'animation de pulsation UNIQUEMENT pour la classe blink-alert (déclenchée par le JS) */
+.blink-alert {
+    animation: alerte-serie-couleur 0.6s infinite ease-in-out !important;
+}
+
+/* Ce conteneur doit avoir ces propriétés pour aligner Jauge et Série côte à côte */
+.jauge-serie-container {
+    display: flex;
+    flex-direction: row; /* Côte à côte */
+    align-items: center; /* Centré verticalement l'un par rapport à l'autre */
+    /* ... reste de tes styles ... */
+}
+
+@keyframes alert-pulse-simple {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.02); opacity: 0.8; }
+}
+
+@keyframes alert-slide {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* On renforce l'opacité des cadres pour qu'ils soient bien "opaques" */
+.glass-card, .question-box {
+    background: rgba(0, 32, 91, 0.95) !important; /* Presque opaque pour bloquer les icônes derrière le texte */
+    background-color: var(--blue) !important; /* Tout sur le même bleu Airbus */
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+}
+
+/* --- BANDEAU JOUEURS ÉPURÉ (SANS CADRE GÉNÉRAL) --- */
+.players-list > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    opacity: 0.5; /* État inactif */
+   
+    /* MODIFICATION : On enlève tout ce qui fait "cadre" autour de l'ensemble */
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 5px;
+}
+
+/* On garde l'encadrement UNIQUEMENT sur le texte du nom */
+.players-list div[style*="font-size"] {
+    font-size: 0.55rem !important;
+    margin-top: 4px !important;
+    font-weight: 800 !important;
+    color: white;
+    text-transform: uppercase;
+   
+    /* AJOUT DE L'ENCADREMENT SUR LE NOM SEUL */
+    padding: 2px 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Mise en avant du joueur actif (Nom et Avatar) */
+.players-list > div[style*="opacity:1"] {
+    opacity: 1 !important;
+}
+
+.players-list > div[style*="opacity:1"] div[style*="font-size"] {
+    border-color: var(--gold); /* Le cadre du nom devient doré */
+    color: var(--gold);
+    background: rgba(255, 204, 0, 0.1);
+}
+
+/* --- LABEL DE LA MANCHE EN GRAS --- */
+#round-label {
+    font-weight: 800 !important;   /* Gras très prononcé */
+    font-size: 1.4rem;             /* Légèrement plus grand */
+    color: var(--white);
+    text-transform: uppercase;     /* En majuscules pour le style cockpit */
+    letter-spacing: 1px;           /* Un peu d'espace entre les lettres */
+}
+
+/* --- TEXTES DE TOUR ET JOUEUR --- */
+#current-player-display {
+    font-weight: 800 !important;      /* Gras très prononcé */
+    text-transform: uppercase;        /* Tout en majuscules */
+    letter-spacing: 2px;              /* Espacement pour le prestige */
+    text-align: center;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+/* Ciblage spécifique du petit texte "TOUR DE" */
+#current-player-display span {
+    font-size: 0.7rem !important;     /* Un peu plus grand que l'original */
+    font-weight: 700 !important;      /* Gras aussi pour le label */
+    color: var(--white) !important;     /* Passage en bleu ciel pour différencier du nom */
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* Ciblage du nom du joueur */
+#current-player-display {
+    font-size: 1.2rem;                /* Nom du joueur bien imposant */
+    color: var(--gold);               /* Or Airbus pour le joueur actif */
+}
+
+/* --- LOGO AIRBUS POSITIONNÉ PLUS BAS ET PLUS PETIT --- */
+.airbus-logo-fixed {
+    position: fixed !important;
+    bottom: 5px !important;    /* Le plus bas possible */
+    right: 15px !important;   /* Décalage léger du bord droit */
+    left: auto !important;    /* On s'assure qu'il n'est pas étiré */
+    top: auto !important;     /* On s'assure qu'il n'est pas en haut */
+    z-index: 9999 !important; /* Devant tout le monde */
+}
+
+.airbus-logo-fixed img {
+    width: 70px !important;   /* Taille vraiment réduite pour être discret */
+    height: auto !important;
+    display: block !important;
+}
+
+/* ============================================================
+   NOUVEL ACCUEIL : COCKPIT TACTIQUE & HUD V2 (ESPRIT AIRBUS)
+   ============================================================ */
+
+/* Fond global de l'accueil - Immersion totale */
+#screen-home {
+    background: radial-gradient(circle at center, rgba(0, 32, 91, 0.4) 0%, #001640 100%), #000;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Le Cadre technique du HUD - Coins biseautés aéronautiques */
+.hud-frame {
+    width: 90%;
+    height: 90%;
+    max-width: 900px;
+    border: 2px solid var(--sky);
+    /* Découpe des coins pour le style cockpit */
+    clip-path: polygon(
+        10% 0%, 90% 0%, 100% 10%, 100% 90%,
+        90% 100%, 10% 100%, 0% 90%, 0% 10%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+    background: rgba(0, 32, 91, 0.2);
+    box-shadow: inset 0 0 50px rgba(0, 161, 224, 0.1);
+}
+
+/* En-tête du HUD */
+.airbus-header-hud {
+    text-align: center;
+    z-index: 10;
+}
+
+.airbus-title-v2 {
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    font-weight: 800;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin: 0;
+    display: block;
+    text-align: center;
+    position: relative;
+   
+    /* EFFET LASER : On utilise un dégradé de texte */
+    background: linear-gradient(
+        90deg,
+        var(--gold) 0%,
+        var(--gold) 45%,
+        #fff 50%,
+        var(--gold) 55%,
+        var(--gold) 100%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+   
+    /* Animation du balayage */
+    animation: scan-laser 3s linear infinite;
+   
+    /* Glow persistant autour du texte pour garder l'aspect HUD */
+    filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.5));
+}
+
+@keyframes scan-laser {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}
+
+/* Ajoute un léger scintillement au laser pour simuler l'énergie */
+.airbus-title-v2::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: scan-laser 3s linear infinite;
+    pointer-events: none;
+}
+
+
+.rules-line-v2 {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sky), transparent);
+    width: 100%;
+    margin: 15px 0;
+}
+
+.airbus-slogan-v2 {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: var(--sky);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    /* On augmente la marge du haut pour écarter le slogan du titre */
+    /* Ancien : 0 | Nouveau : 15px en haut, 0 en bas */
+    margin: 15px 0 0 0;
+    animation: slogan-radar-pulse 2.5s infinite ease-in-out;
+}
+
+/* --- LE HOLOGRAMME TACTIQUE (Image modifiée) --- */
+/* --- NOUVEAU CODE : OMBRE DORÉE TACTIQUE APPLIQUÉE --- */
+/* ============================================================
+   INTENSIFICATION MAJEURE DU "GLOW" DORÉ (COCKPIT TACTIQUE)
+   ============================================================ */
+
+.hologram-viewport {
+    width: 80%;
+    max-width: 480px;
+    aspect-ratio: 16 / 9;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: 3px solid #ffcc00; /* Bordure dorée plus épaisse pour l'impact */
+    position: relative;
+    overflow: hidden;
+    background: rgba(0, 32, 91, 0.6); /* Fond plus sombre pour faire ressortir l'or */
+   
+    /* MODIFICATION MAJEURE : TRIPLE COUCHE D'OMBRE DORÉE (EXTÉRIEURE + INTÉRIEURE) */
+    box-shadow:
+        /* 1. Halo extérieur large et diffus */
+        0 0 70px rgba(255, 204, 0, 0.7),
+        /* 2. Halo extérieur plus serré et intense */
+        0 0 30px rgba(255, 220, 100, 0.9),
+        /* 3. Halo intérieur pour l'effet de projection */
+        inset 0 0 25px rgba(255, 204, 0, 0.5);
+   
+    /* ANIMATION INTENSIFIÉE */
+animation: hologram-float-soft 5s infinite ease-in-out;
+   
+    z-index: 5;
+}
+
+/* NOUVELLE VERSION DOUCE DE L'ANIMATION */
+@keyframes hologram-float-soft {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        /* On réduit l'écart entre le mini et le maxi du glow */
+        filter: drop-shadow(0 0 30px rgba(255, 204, 0, 0.7));
+    }
+    50% {
+        transform: translateY(-8px) scale(1.01);
+        /* On ne monte qu'à 40px au lieu de 50px pour éviter le "flash" */
+        filter: drop-shadow(0 0 40px rgba(255, 204, 0, 0.85));
+    }
+}
+
+/* --- NOUVEAU CODE : COULEURS ORIGINALES RESTAURÉES --- */
+/* --- NOUVEAU CODE : COULEURS ORIGINALES RESTAURÉES ET ÉCLATANTES --- */
+.hologram-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+   
+    /* OPACITÉ AUGMENTÉE (quasi-solide) : On passe de 0.6 à 0.95 */
+    opacity: 0.95 !important;
+   
+    /* ON CONFIRME LA SUPPRESSION DU FILTRE NOIR ET BLANC TACTIQUE */
+    /*filter: sepia(100%) hue-rotate(180deg) saturate(3) contrast(1.1); <--- Supprimé */
+   
+    /* AJUSTEMENT VISUEL SUBTIL : Léger coup de pep's sur la couleur */
+    /* Sans dénaturer l'original, on ravive légèrement les tons rouges et bleus */
+    filter: brightness(1.05) saturate(1.1) !important;
+
+backface-visibility: hidden;    /* Empêche les micro-tremblements */
+    transform: translateZ(0);       /* Force l'accélération matérielle (GPU) */
+    image-rendering: -webkit-optimize-contrast; /* Améliore le piqué de l'image */
+   
+    filter: brightness(1.05) saturate(1.1) !important;
+
+}
+
+.tech-grid-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 161, 224, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 161, 224, 0.1) 1px, transparent 1px);
+    background-size: 15px 15px;
+    pointer-events: none;
+}
+
+
+/* --- BOUTON COMMENCER (HUD) : HARMONISÉ AVEC LE RESTE DU JEU --- */
+.btn-launch-v2 {
+    background-color: var(--blue) !important;
+    color: var(--white) !important;
+   
+    /* On applique EXACTEMENT les mêmes arrondis que BANQUE/DÉCOLLAGE */
+    border: 3px solid var(--white) !important;
+    border-radius: 15px !important;
+   
+    padding: 15px 45px;
+    font-size: 1.4rem !important; /* Taille d'écriture impactante */
+    font-weight: 900 !important;
+    letter-spacing: 5px !important;
+    text-transform: uppercase;
+   
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+   
+    /* Centrage */
+    margin: 20px auto;
+}
+
+/* Effet au survol harmonisé */
+.btn-launch-v2:hover {
+    background-color: var(--white) !important;
+    color: #001640 !important;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Animations HUD */
+@keyframes hologram-float {
+    0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 10px var(--sky)); }
+    50% { transform: translateY(-15px) scale(1.02); filter: drop-shadow(0 0 25px var(--sky)); }
+}
+
+@keyframes slogan-radar-pulse {
+    0%, 100% { opacity: 0.4; text-shadow: 0 0 0px var(--sky); }
+    50% { opacity: 1; text-shadow: 0 0 15px var(--sky); }
+}
+
+/* --- GESTION RIGOUREUSE ET CENTRAGE DES ÉCRANS --- */
+.screen {
+    display: none !important; /* Cache tout par défaut */
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+   
+    /* LE SECRET DU CENTRAGE : */
+    flex-direction: column;
+    align-items: center;    /* Centre horizontalement */
+    justify-content: center; /* Centre verticalement */
+   
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Seul l'écran actif est affiché */
+.screen.active {
+    display: flex !important; /* Réactive le flexbox pour le centrage */
+    z-index: 100;
+}
+
+/* --- RÉCUPÉRATION DES FILIGRANES SUR L'ACCUEIL --- */
+#screen-home.active {
+    display: flex !important;
+    background:
+        /* 1. Le motif d'icônes (Filigranes) */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='white' fill-opacity='0.02'%3E%3Cpath d='M20 25 h30 a5 5 0 0 1 5 5 v15 a5 5 0 0 1-5 5 h-20 l-10 10 v-10 a5 5 0 0 1-5-5 v-15 a5 5 0 0 1 5-5' /%3E%3Ccircle cx='75' cy='65' r='8' /%3E%3Cpath d='M60 90 q15-15 30 0' /%3E%3C/g%3E%3C/svg%3E"),
+        /* 2. Ton dégradé HUD */
+        radial-gradient(circle at center, rgba(0, 32, 91, 0.4) 0%, #001640 100%),
+        /* 3. La couleur de base noire */
+        #000 !important;
+   
+    /* On s'assure que le motif se répète bien comme sur les autres pages */
+    background-size: 150px 150px, auto, auto;
+    background-repeat: repeat, no-repeat, no-repeat;
+}
+
+/* On s'assure que les conteneurs à l'intérieur ne débordent pas */
+.hud-frame, .rules-container-new, .glass-card {
+    margin: auto; /* Aide au centrage élastique */
+}
+/* --- NOUVELLE MISE EN PAGE RÈGLES --- */
+.rules-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 40px;
+    max-width: 900px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.rules-header {
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.rules-title {
+    color: var(--gold);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin: 0;
+}
+
+.rules-line {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--sky), transparent);
+    margin-top: 10px;
+}
+
+
+/* --- CARTES DE RÈGLES ULTRA COMPACTES --- */
+.compact-card {
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    padding: 8px 12px !important;
+    gap: 15px !important;
+    text-align: left !important;
+    min-height: 60px !important;
+    background: rgba(0, 32, 91, 0.9) !important; /* Garde le fond bleu foncé pour la lisibilité */
+}
+
+
+.rule-icon-mini {
+    font-size: 1.8rem;
+    min-width: 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.compact-card .rule-content h3 {
+    font-size: 0.85rem !important;
+    margin: 0 0 2px 0 !important;
+    letter-spacing: 1px;
+}
+
+.compact-card .rule-content p {
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    color: rgba(255, 255, 255, 0.8);
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Ajustement de la grille pour 2 colonnes */
+@media (max-width: 768px) {
+    .rules-grid {
+        grid-template-columns: 1fr !important; /* Repasse en 1 colonne sur petit mobile */
+    }
+    .compact-card {
+        grid-column: span 1 !important;
+    }
+}
+
+
+.rule-icon {
+    font-size: 2rem; /* Taille légèrement réduite */
+    min-width: 50px;
+}
+
+.rule-content p {
+    font-size: 0.85rem; /* Texte plus dense pour faire rentrer les 5 règles */
+    line-height: 1.4;
+}
+
+.rule-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-5px);
+}
+
+.gold-border {
+    border: 1px solid var(--gold) !important;
+    background: rgba(255, 204, 0, 0.05) !important;
+}
+
+.rule-icon {
+    font-size: 2.5rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+.rule-content h3 {
+    color: var(--gold); /* Changé de var(--sky) à var(--gold) */
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.rule-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.rules-btn {
+    margin-top: 10px;
+    box-shadow: 0 0 20px rgba(0, 161, 224, 0.3);
+}
+
+/* Adaptabilité mobile */
+@media (max-width: 768px) {
+    .rules-grid { grid-template-columns: 1fr; }
+    .rules-container { padding: 20px; }
+    .rules-title { font-size: 1.5rem; }
+}
+
+/* Titre principal - On renforce l'aspect technique */
+.airbus-title {
+    font-size: clamp(3rem, 10vw, 5rem); /* Police plus grande */
+    font-weight: 800;
+    letter-spacing: 5px; /* Lettres espacées */
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(0, 161, 224, 0.6); /* Glow bleu ciel */
+    margin: 0;
+}
+
+/* CARTES ET BOUTONS */
+.glass-card {
+    background: var(--glass-bg); backdrop-filter: blur(15px);
+    padding: clamp(2rem, 5vw, 4rem); border-radius: 40px; border: 2px solid var(--glass-border);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column;
+    align-items: center; gap: 1.5rem; width: 95%; max-width: 500px;
+}
+
+/* Modifiez ou ajoutez ce bloc spécifique pour la section config */
+#screen-config .glass-card {
+    max-width: 1200px !important; /* On passe de 900px à 1200px */
+    width: 90%;
+    padding: 50px !important; /* Plus d'espace interne */
+    gap: 3rem !important; /* Plus d'espace entre le titre, le compteur et les noms */
+}
+
+#screen-config h2 {
+    font-size: 2.5rem !important; /* Titre plus grand */
+}
+
+/* Le Bouton Commencer - On le rend plus "Pilote" */
+.btn-main {
+    background-color: transparent !important;
+    border: 3px solid var(--white);
+    color: var(--white);
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+}
+
+/* Effet au survol */
+.btn-main:hover {
+    background-color: var(--white) !important;
+    color: #001640 !important; /* Inversion de couleur */
+    transform: translateY(-5px) scale(1.05); /* Petite montée */
+    box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+}
+
+/* --- BOUTONS DE RÉPONSE RÉDUITS --- */
+.btn-option {
+    background-color: var(--blue) !important; /* Tout sur le même bleu Airbus */
+    border: 2px solid var(--sky);
+    color: white;
+    /* Réduction du padding (haut/bas à 8px au lieu de 15px) */
+    padding: 8px 15px !important;
+    border-radius: 10px;
+    cursor: pointer;
+    /* Police plus petite pour gagner de l'espace */
+    font-size: 0.95rem !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* Hauteur minimale passée de 70px à 45px */
+    min-height: 45px !important;
+    word-wrap: break-word;
+    transform: none !important;
+}
+
+.btn-option:hover {
+    background: var(--sky) !important;
+    color: #001640 !important;
+    border-color: var(--white);
+    transform: none !important; /* Pas de mouvement au survol */
+}
+
+
+
+/* Version bureau : deux colonnes avec des boutons larges */
+@media (min-width: 1024px) {
+    .options-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
+
+/* --- JEU LAYOUT --- */
+.game-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    justify-content: space-between; /* Pousse le header en haut et le footer en bas */
+}
+
+/* --- BANDEAU SUPÉRIEUR OPAQUE --- */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    /* On utilise la variable officielle Airbus */
+    background-color: var(--blue) !important;
+    border-bottom: 2px solid var(--sky); /* Ligne de séparation élégante */
+    border-radius: 15px;
+    margin-bottom: 10px;
+    /* On réduit l'ombre pour un aspect plus intégré */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* --- MINUTEUR (CHRONO & DUEL) : STYLE UNIFIÉ BLEU AIRBUS --- */
+.timer {
+    width: clamp(70px, 15vw, 90px);
+    height: clamp(70px, 15vw, 90px);
+   
+    /* MODIFICATIONS ICI : Fond bleu, texte et bordure blancs */
+    background-color: var(--blue) !important; /* Uniformisé */
+    border: 4px solid #ffffff !important;   /* Bordure blanche pur */
+    color: #ffffff !important;             /* Chiffres en blanc pur */
+   
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 800;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* État spécifique quand c'est le "DUEL" - ON GARDE L'AGRANDISSEMENT */
+.timer[style*="border-color: var(--gold)"] {
+    width: clamp(100px, 20vw, 130px) !important;
+    height: clamp(100px, 20vw, 130px) !important;
+    border-width: 6px !important;
+    font-size: clamp(1.6rem, 5vw, 2.5rem) !important;
+   
+    /* On réaffirme le style blanc sur bleu pour écraser l'ancien doré */
+    background-color: var(--blue) !important; /* Uniformisé */
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* --- MINUTEUR DUEL : FOND BLEU BANDEAU, TEXTE ET CONTOUR BLANCS --- */
+.timer[style*="border-color: var(--gold)"] {
+    width: clamp(100px, 20vw, 130px) !important;
+    height: clamp(100px, 20vw, 130px) !important;
+    border-width: 6px !important;
+    font-size: clamp(1.6rem, 5vw, 2.5rem) !important;
+   
+    /* MODIFICATIONS ICI */
+   
+    /* 1. On utilise le bleu profond d'Airbus pour le fond (le même que le bandeau) */
+    background-color: var(--blue) !important;
+   
+    /* 2. On force le contour en blanc au lieu de doré */
+    border-color: #ffffff !important;
+   
+    /* 3. On force le texte "DUEL" en blanc pur */
+    color: #ffffff !important;            
+   
+    /* 4. On change la lueur (box-shadow) pour qu'elle soit blanche/bleue ciel au lieu de dorée */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* --- ZONE DE JEU PRINCIPALE --- */
+/* La zone centrale qui contient Jauge + Quiz */
+.main-play-area {
+    display: flex;
+    flex: 1; /* Elle va prendre tout l'espace restant entre le haut et le bas */
+    align-items: center; /* Centre verticalement le contenu interne */
+    justify-content: center;
+    gap: 30px;
+    min-height: 0;
+    margin: 20px 0; /* Ajoute un peu d'air */
+}
+
+#success-stats {
+    background: rgba(0, 161, 224, 0.1); /* Léger fond bleuté */
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block; /* Pour qu'il ne prenne pas toute la largeur */
+    align-self: center;    /* Centre l'élément dans le quiz-container */
+    border: 1px solid rgba(0, 161, 224, 0.2);
+}
+
+/* --- NOUVEAUX STYLES DUEL --- */
+.duel-steps-row {
+    display: flex;
+    flex-direction: column; /* Organise le nom au-dessus des points */
+    align-items: center;    /* Centre tout horizontalement */
+    gap: 12px;
+    background-color: var(--blue) !important; /* Uniformisé */
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid var(--glass-border);
+}
+
+.duel-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.duel-p-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 32, 91, 0.8);
+    padding: 8px 15px;
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.duel-p-card span {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    color: var(--white);
+}
+
+.duel-header-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.duel-vs-badge {
+    font-weight: 900;
+    color: var(--gold);
+    font-style: italic;
+    font-size: 1.1rem;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+
+/* État actif pendant le duel */
+.duel-p-card.active-turn {
+    border-color: var(--gold);
+    background: rgba(255, 204, 0, 0.1);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- BANDEAU JOUEURS MINIATURISÉ (2 LIGNES) --- */
+.players-list {
+    display: grid !important;
+    grid-template-columns: repeat(10, 1fr) !important;
+    gap: 2px 4px !important;        /* Espace vertical réduit à 2px */
+    padding: 5px 8px !important;    /* Padding haut/bas réduit à 5px */
+    height: auto !important;
+    min-height: 65px !important;    /* RÉDUIT : de 80px à 65px */
+    background: rgba(0,32,91,0.9) !important;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px !important;     /* Moins d'espace avec le reste du jeu */
+}
+
+/* On réduit encore un peu l'avatar pour gagner de la hauteur */
+.players-list img {
+    width: 35px !important; /* Un peu plus grand pour l'équilibre visuel */
+    height: 35px !important;
+    border-width: 2px !important;
+}
+
+/* On ajuste le nom pour qu'il soit collé à l'avatar */
+.players-list div[style*="font-size"] {
+    font-size: 0.48rem !important;  /* Légèrement réduit */
+    line-height: 1 !important;      /* Hauteur de ligne minimum */
+    margin-top: 1px !important;
+    font-weight: 500 !important;
+}
+
+/* On s'assure que le conteneur du bas ne prend pas trop de place */
+#players-list {
+    flex: 0 0 auto !important;      /* Ne s'étire pas inutilement */
+}
+
+/* --- PRÉNOMS DES FINALISTES AGRANDIS --- */
+.duel-player-name {
+    font-size: 1.6rem !important; /* Prénom bien plus grand */
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(0, 161, 224, 0.5);
+    margin-bottom: 5px;
+}
+
+/* --- GRILLE D'ÉLIMINATION (VOTE) ADAPTATIVE --- */
+.vote-grid {
+    display: grid !important;
+    /* Crée autant de colonnes que possible (min 150px de large) */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    padding: 10px !important;
+    max-height: 70vh; /* Permet le scroll si vraiment trop de joueurs */
+    overflow-y: auto;
+}
+
+/* On ajuste la taille des cartes de vote pour qu'elles soient plus compactes */
+#screen-vote .glass-card {
+    flex-direction: column !important; /* Image au dessus du texte */
+    padding: 10px !important;
+    gap: 5px !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: 15px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* On réduit les images et textes dans les cartes de vote */
+#screen-vote img {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+#screen-vote div[style*="font-size:1.2rem"] {
+    font-size: 0.9rem !important; /* Nom du joueur */
+    font-weight: 600 !important;
+}
+
+#screen-vote div[style*="color:#ff4757"] {
+    font-size: 0.7rem !important; /* Texte "Erreurs" */
+}
+
+/* Animation pour souligner le joueur actif */
+.active-duel-side {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.duel-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 900;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.duel-dot.correct {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+    transform: scale(1.1);
+}
+
+.duel-dot.wrong {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+    transform: scale(1.1);
+}
+
+.duel-dot.active-player-dot {
+    border-color: var(--gold);
+    box-shadow: 0 0 15px var(--gold);
+    background: rgba(255, 204, 0, 0.1);
+}
+
+/* JAUGE CHROMATIQUE */
+/* JAUGE CHROMATIQUE ET LABEL */
+/* --- JAUGE INITIALE AGRANDIE + LABEL --- */
+.gauge-wrapper {
+    height: 80%; /* La jauge prendra 80% de la hauteur de la zone centrale */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- JAUGE OPACIFIÉE --- */
+.gauge-container {
+    position: relative;
+    width: 35px;
+    height: 100%;
+    /* Utilisation du bleu Airbus opaque (sans transparence) pour bloquer les icônes */
+    background-color: var(--blue) !important; /* Tout sur le même bleu Airbus */
+    border-radius: 20px;
+    border: 2px solid var(--sky); /* Bordure bleue ciel pour bien la détacher */
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Ombre interne pour l'effet de profondeur */
+}
+
+.gauge-fill {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0%; /* Piloté par le JS */
+    /* Le dégradé doit être linéaire et s'étendre sur toute la hauteur potentielle */
+    background: linear-gradient(to top,
+        #ff4757 0%,    /* Rouge en bas (0%) */
+        #ffa502 50%,   /* Orange au milieu (50%) */
+        #2ed573 100%   /* Vert en haut (100%) */
+    );
+    background-size: 100% 100%; /* Important pour garder les couleurs fixes */
+    transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+}
+
+.gauge-labels {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    font-weight: bold;
+}
+
+/* --- ÉMOJIS DE STATUT EXTÉRIEURS --- */
+.gauge-status-emoji {
+    font-size: 1.4rem; /* Taille adaptée */
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); /* Ombre pour le relief */
+    transition: transform 0.3s ease; /* Petit effet au survol */
+}
+
+.status-top {
+    margin-top: 0; /* Aligné avec le haut du tube */
+}
+
+.status-bottom {
+    margin-bottom: 0; /* Aligné avec le bas du tube */
+}
+
+/* Petit effet sympa : le smiley "content" grossit légèrement si la jauge est pleine */
+.gauge-fill[style*="height: 100%"] ~ .gauge-status-emoji.status-top {
+    transform: scale(1.2);
+}
+
+/* Ajustement du wrapper pour laisser la place aux smileys à gauche */
+.gauge-wrapper {
+    width: auto;
+    min-width: 140px; /* On élargit un peu pour l'équilibre visuel */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- ÉMOJIS EXTÉRIEURS DE PRÉCISION --- */
+.gauge-status-emoji {
+    position: absolute;
+    left: 20px; /* Positionné à gauche du wrapper */
+    font-size: 1.3rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    z-index: 10; /* Devant tout */
+}
+
+.status-top {
+    top: 10px; /* On le descend de 10 pixels */
+}
+
+.status-bottom {
+    /* ON LE BAISSE ICI */
+    bottom: 40px; /* Aligné avec la base visuelle du tube */
+}
+
+/* Ajustement du wrapper pour laisser la place aux smileys à gauche */
+.gauge-wrapper {
+    min-width: 130px; /* On élargit pour l'équilibre */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: 100%;
+}
+
+/* On s'assure que le container de la jauge est bien centré */
+.gauge-container {
+    position: relative;
+    width: 35px;
+    height: 100%;
+    background-color: var(--blue) !important;
+    border-radius: 20px;
+    border: 2px solid var(--sky);
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* On s'assure que le wrapper ne compresse pas les éléments */
+.gauge-wrapper {
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+/* On garde le container de la jauge propre */
+.gauge-container {
+    position: relative;
+    width: 35px;
+    height: 100%;
+    background-color: #001640;
+    border-radius: 20px;
+    border: 2px solid var(--sky);
+    overflow: hidden; /* Garde le remplissage à l'intérieur */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* On supprime les anciens chiffres (0€, 50€...) qui ne correspondent plus au Climat */
+.gauge-label-step {
+    display: none !important;
+}
+
+/* Positionnement des smileys indicateurs sur le tube */
+.status-top {
+    top: 5px; /* Aligné sur 100% */
+}
+
+.status-bottom {
+    bottom: 35px; /* Aligné sur 0% */
+}
+
+/* Transition fluide pour le changement de couleur */
+.gauge-fill {
+    transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.4s ease;
+}
+
+.gauge-caption {
+    margin-top: 12px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.gauge-labels { position: absolute; height: 100%; width: 100%; display: flex; flex-direction: column-reverse; justify-content: space-between; font-size: 0.65rem; font-weight: bold; }
+.gauge-label-step { padding-left: 40px; white-space: nowrap; opacity: 0.6; }
+
+/* --- BOUTON BANQUE (DOMINANT ET ALIGNÉ) --- */
+.btn-bank {
+    flex: 3;                         /* Prend 3 parts de l'espace (beaucoup plus long) */
+    background-color: var(--blue) !important; /* Tout sur le même bleu Airbus */
+    color: var(--gold) !important;
+    border: 3px solid var(--gold) !important;
+    padding: 20px 0;                 /* Padding vertical pour le confort */
+    font-size: clamp(1rem, 2.5vh, 1.8rem) !important;
+    font-weight: 900;
+    border-radius: 15px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 5px;             /* Texte étalé pour remplir la longueur */
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    height: 100%;
+}
+
+/* --- BOUTON PAUSE (AGRANDI ET ALIGNÉ) --- */
+#btn-pause {
+    flex: 1;
+    background-color: var(--blue) !important;
+    color: var(--white) !important;
+    border: 3px solid rgba(255, 255, 255, 0.2) !important; /* Bordure épaissie pour match la banque */
+    border-radius: 15px;
+   
+    /* ALIGNEMENT SUR LE STYLE BANQUE */
+    font-size: 1.6rem !important;      /* Même taille que .btn-bank */
+    font-weight: 900 !important;      /* Même épaisseur */
+    letter-spacing: 5px !important;   /* Même espacement des lettres */
+    text-transform: uppercase;
+   
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: none !important;
+    transform: none !important;
+}
+
+/* --- INTERACTIONS --- */
+
+/* La Banque garde son effet de survol pour l'incitation au gain */
+.btn-bank:hover {
+    background-color: var(--gold) !important;
+    color: #001640 !important;
+    box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
+}
+
+#btn-pause:hover, #btn-pause:active, #btn-pause:focus {
+    /* On s'assure qu'aucune règle de survol ou de clic ne le fasse bouger */
+    transform: none !important;
+    background-color: #001640 !important;
+    top: 0 !important;
+}
+
+.btn-bank:active {
+    transform: scale(0.95); /* Effet de pression */
+}
+
+/* SMILEY D'HUMEUR */
+/* --- CONTENEUR SMILEY ET STATS --- */
+/* --- CONTENEUR SMILEY ET STATS ÉPURÉ --- */
+.bank-mood-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    /* Suppression du background noir/bleu et du padding */
+    background: transparent !important;
+    padding: 0;
+    border-radius: 0;
+    text-align: center;
+}
+
+#q-remaining {
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-weight: 700;
+    opacity: 1 !important; /* On le rend bien net */
+    margin-top: 2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Petite ombre pour décoller du fond bleu marine */
+}
+
+#success-stats {
+    /* --- TAILLE ET STYLE --- */
+    font-size: clamp(0.9rem, 2vh, 1.2rem) !important; /* Plus grand et dynamique */
+    font-weight: 800 !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+   
+    /* --- ENCADRÉ --- */
+    background: rgba(0, 161, 224, 0.15) !important;
+    padding: 8px 20px !important;
+    border-radius: 25px;
+    border: 1px solid rgba(0, 161, 224, 0.4);
+   
+    /* --- POSITIONNEMENT --- */
+    margin: 15px 0 !important;
+    display: inline-block;
+}
+
+.mood-emoji {
+    font-size: 3rem;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    transition: all 0.5s ease;
+    display: inline-block; /* Indispensable pour l'animation de taille */
+}
+
+
+
+
+/* La classe qui sera ajoutée par le JavaScript */
+.mood-excellent {
+    animation: goldPulse 1s infinite alternate;
+    filter: drop-shadow(0 0 15px var(--gold));
+}
+
+
+
+
+@keyframes goldPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+/* On peut ajouter cette classe dynamiquement en JS si on veut aller plus loin */
+@keyframes goldPulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px gold); }
+    100% { transform: scale(1.2); filter: drop-shadow(0 0 20px gold); }
+}
+
+.mood-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--sky); margin-top: 5px; }
+
+
+
+
+/* --- COMPACTAGE POUR 20 JOUEURS --- */
+#player-names-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important; /* Cases plus larges */
+    gap: 20px !important;
+    padding: 20px !important;
+    max-height: 60vh; /* Limite la hauteur pour laisser de la place aux boutons */
+    overflow-y: auto;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 161, 224, 0.3);
+    border-radius: 8px;
+    height: 50px; /* Passage de 40px à 50px pour laisser respirer la police agrandie */
+}
+
+.input-icon {
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid rgba(0, 161, 224, 0.2);
+    font-size: 0.9rem !important;
+    padding: 0 10px !important;
+}
+
+.input-icon img {
+    width: 35px !important; /* Avatars plus grands dans les champs */
+    height: 35px !important;
+}
+
+.player-name-input {
+    flex: 1;
+    /* Augmentation de la taille et mise en gras */
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    text-transform: none !important;
+    padding: 5px 10px !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    letter-spacing: 0.5px;
+}
+
+/* Effet au survol/focus du groupe entier */
+.input-group:focus-within {
+    border-color: var(--sky);
+    background: rgba(0, 161, 224, 0.1);
+    box-shadow: 0 0 15px rgba(0, 161, 224, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+
+.input-group:focus-within .input-icon {
+    color: var(--gold); /* L'icône change de couleur quand on écrit */
+}
+
+/* --- CONTENEUR DES BOUTONS ALIGNÉ --- */
+.quiz-container > div:last-child {
+    margin-top: 30px;
+    height: 10vh; /* Donne une hauteur proportionnelle aux boutons */
+}
+
+/* ============================================================
+   BLOC CENTRAL : NAVIGATION DISPLAY (QUESTION & MINUTE RH)
+   ============================================================ */
+
+.question-box {
+    position: relative; /* Indispensable pour que le "absolute" de la minute-rh fonctionne */
+    overflow: hidden; /* Sécurité : rien ne sortira plus du cadre bleu */
+    width: 100%;
+    max-width: none; /* Occupe toute la largeur disponible */
+    /* --- AJUSTEMENT DE LA HAUTEUR --- */
+    height: 400px !important; /* On augmente un peu la hauteur pour le plein écran */
+   
+    /* --- STYLES EXISTANTS (pour mémoire) --- */
+    background: #000b1e !important;
+    border: 3px solid var(--sky);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center;
+    gap: 20px; /* Espace fixe entre la question et les boutons */
+    padding: 30px !important;
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0, 161, 224, 0.3), 0 0 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px !important;
+}
+
+/* Suppression définitive du texte technique en haut à droite */
+.question-box::after { display: none !important; }
+
+/* Effet de balayage LCD (Radar) */
+.question-box::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(0, 161, 224, 0.05) 50%, transparent 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+/* Zone de contenu flexible (Texte question ou Minute RH) */
+#question-text {
+    /* --- NOUVEAUX STYLES --- */
+    font-size: clamp(1.4rem, 4vh, 2.8rem) !important; /* Beaucoup plus gros, s'adapte à la hauteur */
+    font-weight: 800; /* Plus épais pour la lisibilité */
+    color: var(--white);
+    text-shadow: 0 0 15px rgba(0, 161, 224, 0.8); /* Glow bleu ciel plus intense */
+   
+    /* --- CENTRAGE VERTICAL PARFAIT --- */
+    /* On retire le height: 100% qui peut poser problème */
+    flex: 1;
+    display: flex;
+    align-items: center; /* Centre verticalement le texte dans son bloc */
+    justify-content: center; /* Centre horizontalement */
+    text-align: center;
+    width: 100%;
+    max-width: 90%; /* Évite que le texte touche les bords */
+    font-size: clamp(1.4rem, 3.5vh, 2.2rem) !important; /* Ajustement léger de la taille */
+    margin: 0 !important;
+}
+
+/* LE SAVIEZ-VOUS ? - ADAPTATION DYNAMIQUE */
+.minute-rh-box {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+   
+    /* On utilise toute la largeur du cockpit */
+    width: 92% !important;
+    max-width: 850px !important;
+   
+    /* ICI : On laisse la hauteur s'ajuster seule au contenu */
+    height: auto !important;
+    min-height: fit-content !important;
+   
+    /* Masquage total des boutons en dessous */
+    z-index: 1000 !important;
+    background: rgba(0, 11, 30, 0.98) !important;
+   
+    /* Design et respiration */
+    border: 3px dashed var(--sky) !important;
+    border-radius: 20px;
+    padding: 30px 40px !important; /* Plus d'espace interne en haut/bas */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 1), 0 0 15px var(--sky);
+}
+
+.minute-rh-box p {
+    font-size: clamp(1rem, 2.2vh, 1.3rem) !important;
+    line-height: 1.6;
+    margin: 15px 0 !important;
+    text-align: center;
+}
+
+.minute-rh-box span[style*="color:var(--gold)"] {
+    /* --- NOUVEAUX STYLES --- */
+    font-size: clamp(1.1rem, 3vh, 1.8rem) !important; /* Taille d'écriture impactante */
+    font-weight: 800; /* Très gras */
+    text-transform: uppercase;
+    letter-spacing: 2px; /* Espacement pour le prestige */
+    margin-bottom: 15px !important; /* Plus d'espace sous le titre */
+    display: block; /* S'assure qu'il prend toute la largeur pour le centrage */
+    text-align: center; /* Centrage horizontal du texte lui-même */
+    filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.5)); /* Léger glow doré */
+}
+
+.minute-rh-content {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem !important;
+    line-height: 1.4;
+    color: #a0d8ef !important;
+}
+
+#btn-resume-mission {
+    /* --- NOUVEAUX STYLES --- */
+    font-size: 1rem !important;
+    flex-shrink: 0; /* Empêche le bouton de s'écraser */
+    margin-top: 25px !important;
+    padding: 12px 35px !important;
+   
+    /* --- CENTRAGE --- */
+    display: flex !important; /* Force le flexbox */
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto !important; /* Centrage horizontal automatique */
+    width: auto !important; /* Ne prend que la largeur du texte */
+    border-radius: 30px !important; /* Look plus moderne/pilote */
+}
+
+/* Grille des réponses (Options) */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    margin-top: auto;
+    flex-shrink: 0; /* Verrouille la taille des boutons de réponse */
+}
+
+/* --- GRILLE DES RÉPONSES RESPONSIVE --- */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px; /* Espace entre la question et les boutons */
+    flex-shrink: 0; /* Empêche les boutons de s'écraser */
+}
+
+@media (min-width: 768px) {
+    .options-grid {
+        grid-template-columns: 1fr 1fr; /* Repasse en deux colonnes sur tablette/PC */
+    }
+}
+
+/* --- BOUTONS DE RÉPONSES PLUS DISCRETS --- */
+.btn-option {
+    /* --- TAILLE DE POLICE HARMONISÉE --- */
+    /* On utilise clamp pour que ce soit gros en plein écran mais raisonnable sur petit écran */
+    font-size: clamp(0.95rem, 2.2vh, 1.3rem) !important;
+    font-weight: 600; /* Un peu plus épais pour le contraste */
+    letter-spacing: 0.5px; /* Un léger espacement pour le côté "technique" */
+   
+    /* --- ESPACEMENT INTERNE --- */
+    padding: 12px 25px !important;
+    min-height: 60px !important; /* On leur redonne une hauteur minimum stable */
+   
+    /* --- ALIGNEMENT --- */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1.2;
+   
+    /* --- STYLES EXISTANTS CONSERVÉS --- */
+    background-color: var(--blue) !important;
+    border: 2px solid var(--sky);
+    color: white;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+
+
+
+/* Effet Mort Subite : Texte en Or avec pulsation */
+.sudden-death-text {
+    color: var(--gold) !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: pulseGold 1.5s infinite alternate;
+}
+
+@keyframes pulseGold {
+    from { text-shadow: 0 0 10px rgba(255, 204, 0, 0.5); transform: scale(1); }
+    to { text-shadow: 0 0 25px rgba(255, 204, 0, 0.9); transform: scale(1.02); }
+}
+
+/* FINALE */
+.flash-success { animation: flashGreen 0.4s ease-out; }
+.flash-error { animation: flashRed 0.4s ease-out; }
+
+
+
+
+@keyframes flashGreen {
+    0% { background-color: rgba(46, 213, 115, 0.6); }
+    100% { background-color: transparent; }
+}
+
+
+
+
+@keyframes flashRed {
+    0% { background-color: rgba(255, 71, 87, 0.6); }
+    100% { background-color: transparent; }
+}
+
+
+
+
+/* --- STYLE DES ENCADRÉS PRÉNOMS (PAGE 2) --- */
+.player-name-input {
+    width: 100%;
+    padding: 15px !important;
+    /* On harmonise ici aussi à 1.1rem */
+    font-size: 1.1rem !important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700 !important;
+    color: var(--white) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 2px solid rgba(0, 161, 224, 0.3) !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.3s ease !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Effet quand on clique dans la case */
+.player-name-input:focus {
+    border-color: var(--sky) !important;
+    background: rgba(0, 161, 224, 0.1) !important;
+    box-shadow: 0 0 15px rgba(0, 161, 224, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+
+/* Style du texte indicatif (placeholder) */
+.player-name-input::placeholder {
+    /* On l'aligne sur la taille du texte saisi pour plus de clarté */
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    opacity: 0.6; /* On le laisse un peu transparent pour différencier du texte saisi */
+}
+
+
+
+
+/* Animation à l'apparition des cases */
+#player-names-container input {
+    animation: slideInUp 0.4s ease-out forwards;
+}
+
+
+
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+/* MISC */
+
+
+
+
+/* --- GRILLE RIGIDE 2 LIGNES POUR 20 JOUEURS --- */
+.players-list {
+    display: grid !important;
+    /* On crée 10 colonnes de largeur égale */
+    grid-template-columns: repeat(10, 1fr) !important;
+    gap: 4px !important;            /* Espace minimum entre les joueurs */
+    padding: 8px !important;
+    height: auto !important;
+    min-height: 80px;
+    background: rgba(0,32,91,0.9) !important;
+    border-radius: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 12vh !important; /* On leur donne une vraie zone de présence */
+    max-height: 100px;
+    margin-top: auto;
+}
+
+
+
+
+/* On cible chaque bloc joueur dans la grille */
+.players-list > div {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important; /* Permet au bloc de rétrécir */
+    opacity: 0.5;            /* État inactif par défaut */
+}
+
+
+
+
+/* Style de l'avatar miniature */
+.players-list img {
+    width: 22px !important;  /* Encore plus petit pour tenir à 10 par ligne */
+    height: 22px !important;
+    border-width: 1px !important;
+    padding: 1px !important;
+}
+
+
+
+
+/* Style du nom miniature */
+.players-list div[style*="font-size"] {
+    /* --- NOUVEAUX STYLES --- */
+    font-size: 0.75rem !important; /* On passe de 0.55 à 0.75 */
+    font-weight: 700 !important;
+    letter-spacing: 1px;
+    margin-top: 6px !important;
+   
+    /* --- ENCADRÉ DU NOM --- */
+    padding: 3px 12px !important; /* Un peu plus d'espace dans la pilule */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.players-list > div[style*="opacity:1"] div[style*="font-size"] {
+    font-size: 0.9rem !important; /* Le nom du joueur actif devient plus grand */
+    color: var(--gold) !important;
+    background: rgba(255, 204, 0, 0.15) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+    transform: translateY(-2px); /* Petit effet de soulèvement */
+}
+
+
+/* Mise en avant du joueur actif */
+.players-list > div[style*="transform:scale(1.1)"],
+.players-list > div[style*="opacity:1"] {
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+
+
+
+.game-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Aligne vers le haut */
+    gap: 5px;
+}
+
+/* La zone de jeu centrale prend tout l'espace restant */
+.main-play-area {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.player-item { min-width: 80px; opacity: 0.4; text-align: center; font-size: 0.8rem; }
+.player-item.active { opacity: 1; transform: scale(1.1); color: var(--gold); }
+.avatar-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--sky); }
+.counter-ui {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centre le groupe entier */
+    gap: 30px;
+    margin: 20px 0;
+    width: 100%; /* Prend toute la largeur de la carte */
+}
+
+
+#player-count {
+    font-size: 8rem !important; /* Chiffre beaucoup plus gros (était à 5rem) */
+    font-weight: 800;
+    color: var(--gold);
+    min-width: 180px;
+    text-align: center; /* Centre le chiffre à l'intérieur de son espace */
+    display: inline-block;
+}
+
+/* Animation pour l'entrée en Duel */
+.duel-announcement {
+    animation: zoomInGold 0.8s ease-out;
+}
+
+/* Animation Clignotante Rouge pour Stabilisation */
+@keyframes bank-alert-red {
+    0% { border-color: var(--danger); box-shadow: 0 0 5px var(--danger); }
+    50% { border-color: white; box-shadow: 0 0 20px var(--danger); transform: scale(1.02); }
+    100% { border-color: var(--danger); box-shadow: 0 0 5px var(--danger); }
+}
+
+
+
+
+/* Animation Clignotante Dorée pour Accord Majeur (1000+) */
+@keyframes bank-goal-gold {
+    0% { border-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+    50% { border-color: white; box-shadow: 0 0 25px var(--gold); transform: scale(1.05); }
+    100% { border-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+}
+
+
+
+
+.bank-critical-alert {
+    animation: bank-alert-red 0.6s infinite alternate !important;
+    color: var(--danger) !important;
+}
+
+.bank-goal-reached {
+    animation: bank-goal-gold 0.6s infinite alternate !important;
+}
+
+@keyframes zoomInGold {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { border-color: var(--gold); box-shadow: 0 0 30px var(--gold); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
+.btn-circle { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--sky); background: transparent; color: white; font-size: 1.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+#player-count { font-size: 4rem; font-weight: 800; color: var(--gold); }
+
+/* Le Conteneur "Cockpit" - Pour l'illustration */
+.cockpit-container {
+    /* C'est ici qu'on réduit la place de l'image ! */
+    width: 60%; /* L'image prend moins de largeur */
+    max-width: 450px;
+    aspect-ratio: 16/9; /* Garde la proportion */
+   
+    /* On lui donne une forme technique (type hublot/écran) */
+    border: 3px solid var(--sky);
+    border-radius: 25px; /* Bords arrondis pour le design */
+   
+    overflow: hidden; /* Pour que l'image ne dépasse pas */
+    margin: 20px 0; /* Espace autour */
+   
+    /* Petite ombre de profondeur */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 161, 224, 0.4);
+   
+    position: relative;
+    z-index: 2;
+}
+
+
+/* L'image à l'intérieur du conteneur */
+.cockpit-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* L'image remplit la zone sans se déformer */
+    opacity: 0.9; /* Légèrement translucide */
+}
+
+.danger { color: var(--danger); text-transform: uppercase; }
+
+/* --- VERSION ULTRA-ADOUCIE --- */
+.duel-announcement {
+    background: rgba(0, 32, 91, 0.98) !important; /* Presque opaque pour la lisibilité */
+    padding: 40px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important; /* Bordure plus fine */
+    border-radius: 20px;
+    text-align: center;
+    opacity: 1;
+   
+    /* Animation ralentie à 3 secondes pour un effet très calme */
+    animation: zoomInGold 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.49), soft-glow-white 3s infinite ease-in-out;
+   
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+@keyframes soft-glow-white {
+    0%, 100% {
+        /* Presque pas de lueur au repos */
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+    }
+    50% {
+        /* Lueur très courte et très transparente */
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.15);
+    }
+}
+
+@keyframes zoomInGold {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animation Clignotante Rouge pour le Chrono */
+.timer-warning {
+    background-color: var(--danger) !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+    animation: blink-red 0.5s infinite alternate;
+    box-shadow: 0 0 20px var(--danger);
+}
+
+/* Animation pour le texte de la Minute RH */
+#question-text small {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(0, 161, 224, 0.1);
+    border-radius: 10px;
+    border-left: 3px solid var(--sky);
+    animation: fadeInDown 0.4s ease-out;
+}
+
+
+
+/* On s'assure que le bouton dans la boîte ne tremble pas */
+#btn-resume-mission:hover {
+    background: var(--sky) !important;
+    color: var(--blue) !important;
+}
+
+@keyframes alerte-serie-couleur {
+    0% {
+        color: var(--sky);
+        transform: scale(1);
+        /* On centre l'ombre (0 0) et on la réduit */
+        text-shadow: 0 0 8px rgba(0, 161, 224, 0.4);
+    }
+    50% {
+        color: var(--gold);
+        transform: scale(1.05); /* Pulsation plus discrète */
+        /* On projette une légère lueur vers la droite (4px) et on adoucit le doré */
+        text-shadow: 4px 0 12px rgba(255, 204, 0, 0.6);
+    }
+    100% {
+        color: var(--sky);
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 161, 224, 0.4);
+    }
+}
+
+#chain-counter {
+    /* --- TAILLE ET STYLE --- */
+    font-size: clamp(1rem, 2.5vh, 1.5rem) !important; /* Taille augmentée */
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+   
+    /* --- COULEUR --- */
+    color: var(--sky) !important; /* Bleu ciel par défaut */
+    text-shadow: 0 0 10px rgba(0, 161, 224, 0.5);
+   
+    /* --- ESPACEMENT --- */
+    margin-top: 5px;
+    display: block;
+
+    margin-left: 10px; /* Décale légèrement tout le bloc vers la droite */
+    display: inline-block;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Empêche le texte de revenir à la ligne */
+}
+
+/* L'alerte quand on atteint 5/5 (déjà dans ton code, mais on renforce la police) */
+.blink-alert {
+    font-size: clamp(1.1rem, 2.8vh, 1.7rem) !important; /* Grossit encore plus en alerte */
+    color: var(--gold) !important;
+    text-shadow: 0 0 15px var(--gold);
+}
+
+
+
+
+/* BOUTON AIDE ? */
+.btn-help-trigger {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--sky);
+    border: 2px solid white;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 100;
+}
+
+
+
+
+/* --- MODAL D'AIDE ÉLARGIE (SANS SCROLL) --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 8, 20, 0.9); /* Fond plus sombre pour focus */
+    backdrop-filter: blur(10px);
+    z-index: 20000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+
+
+.modal-content {
+    background: var(--blue);
+    width: 95%;
+    max-width: 1000px; /* Élargissement majeur */
+    border: 2px solid var(--sky);
+    border-radius: 25px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0, 161, 224, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.modal-close {
+    position: absolute;
+    top: 15px; right: 20px;
+    background: none; border: none;
+    color: white; font-size: 2.5rem; cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+
+
+
+.modal-close:hover { color: var(--gold); }
+
+
+
+
+/* Grille interne pour afficher les 4 zones sans scroller */
+.modal-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.help-section {
+    padding: 12px 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 4px solid transparent;
+}
+
+/* Couleurs de bordure pour repérage rapide */
+.danger-zone { border-left-color: var(--danger); }
+.tension-zone { border-left-color: #e67e22; }
+.vigilance-zone { border-left-color: var(--sky); }
+.success-zone { border-left-color: var(--success); }
+
+.help-section p {
+    margin: 0 0 5px 0;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.help-section ul { list-style: none; padding: 0; margin: 0; }
+.help-section li { font-size: 0.82rem; line-height: 1.3; margin-bottom: 5px; color: rgba(255,255,255,0.9); }
+
+.help-footer {
+    grid-column: span 2; /* Prend toute la largeur en bas */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 15px;
+    padding-top: 15px;
+    text-align: center;
+}
+
+/* Adaptation mobile (si l'écran est trop petit, on laisse le scroll par sécurité) */
+@media (max-width: 800px) {
+    .modal-grid-layout { grid-template-columns: 1fr; }
+    .modal-content { max-height: 90vh; overflow-y: auto; }
+}
+
+.danger-zone p b { color: #ff4757; }
+.success-zone p b { color: #2ed573; }
+
+.header-titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement tout le bloc */
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.airbus-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    letter-spacing: 5px;
+    margin: 0;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    color: var(--white);
+}
+
+.airbus-slogan {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--sky); /* Utilisation du bleu ciel Airbus pour le contraste */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-top: 5px; /* Espace minimal sous le titre */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    opacity: 0.9;
+}
+
+/* ANIMATION DU BOUTON AIDE EN ZONE ROUGE */
+@keyframes help-pulse-danger {
+    0% { background: var(--sky); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); transform: scale(1); }
+    50% { background: var(--danger); box-shadow: 0 0 0 15px rgba(255, 71, 87, 0); transform: scale(1.3); }
+    100% { background: var(--sky); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); transform: scale(1); }
+}
+
+.help-danger-blink {
+    animation: help-pulse-danger 1s infinite ease-in-out;
+    border-color: white !important;
+    z-index: 1000;
+}
+
+/* Style de base du bouton (ajustement pour la visibilité) */
+.btn-help-trigger {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--sky);
+    border: 2px solid white;
+    color: white;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 1.1rem;
+    z-index: 100;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Animation d'alerte rouge pour la jauge en danger */
+@keyframes gauge-danger-blink {
+    0% { filter: drop-shadow(0 0 5px #ff4757); opacity: 1; }
+    50% { filter: drop-shadow(0 0 20px #ff4757); opacity: 0.7; }
+    100% { filter: drop-shadow(0 0 5px #ff4757); opacity: 1; }
+}
+
+.gauge-critical {
+    animation: gauge-danger-blink 0.8s infinite ease-in-out;
+    border-color: #ff4757 !important; /* La bordure devient rouge aussi */
+}
+
+@keyframes blink-red {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes impact-gold {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); box-shadow: 0 0 50px var(--gold); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (min-width: 1024px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+
+/* --- ANIMATION DE CLIGNOTEMENT POUR LES SMILEYS --- */
+@keyframes smiley-blink {
+    0% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+    50% { opacity: 0.7; transform: scale(1.15); filter: drop-shadow(0 0 15px var(--sky)); }
+    100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+}
+
+/* Conteneur principal du manuel */
+.rules-container-new {
+    background: #001640;
+    border: 3px solid var(--blue);
+    border-radius: 30px;
+    padding: 35px;
+    max-width: 1100px;
+    width: 95%;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+   
+    /* --- LES LIGNES POUR LE CENTRAGE --- */
+    display: flex;
+    flex-direction: column; /* Aligne le titre, la grille et le bouton verticalement */
+    align-items: center;    /* Centre horizontalement tout le contenu, y compris le bouton */
+    /* ---------------------------------- */
+}
+
+#screen-team-score .rules-title {
+    font-size: 1.8rem !important; /* Réduit de 2.2rem */
+    letter-spacing: 3px;
+    padding-top: 5px;
+}
+
+#screen-team-score .rules-line {
+    margin: 10px 0 15px 0 !important; /* Réduit les marges haute/basse */
+}
+
+/* --- BLOC SCORE ET JAUGE (COULEURS ET FONT) --- */
+#screen-team-score p:first-of-type {
+    font-size: 0.95rem !important;
+    color: var(--white) !important;
+    opacity: 1 !important;
+    margin-bottom: 5px !important;
+}
+
+#final-team-points {
+    font-size: 3rem !important; /* Réduit de 4rem */
+    margin: 2px 0 !important;
+}
+
+#team-performance-label {
+    font-size: 0.8rem !important;
+    margin-bottom: 15px !important; /* Réduit de 30px */
+}
+
+/* --- STATISTIQUES ET BLOC CLASSEMENT (ALIGNE ET NET) --- */
+
+/* Stats sur une seule ligne plus serrée */
+#screen-team-score div[style*="display: flex; justify-content: center; gap: 20px;"] {
+    gap: 10px !important;
+    font-size: 0.75rem !important; /* Réduit de 0.85rem */
+    margin-bottom: 8px !important;
+}
+
+/* Bloc Classement plus compact */
+#screen-team-score div[style*="background: rgba(0, 32, 91, 0.6); border-radius: 15px;"] {
+    margin: 0 auto 15px auto !important; /* Réduit la marge basse de 30px à 15px */
+    max-width: 480px;
+}
+
+/* L'en-tête "CLASSEMENT GÉNÉRAL" */
+#screen-team-score div[style*="background: rgba(0, 161, 224, 0.2); padding: 8px;"] {
+    background: rgba(0, 161, 224, 0.2) !important; /* Fond bleuté */
+    border-bottom: 2px solid var(--sky) !important; /* Ligne de séparation bleue */
+    padding: 10px !important;
+}
+
+#leaderboard-title {
+    font-size: 0.8rem !important;
+    color: var(--gold) !important;
+    font-weight: 800 !important;
+    letter-spacing: 3px !important;
+}
+
+/* --- LE CADRE DU CLASSEMENT (SCROLL TOTAL LIBÉRÉ) --- */
+#leaderboard-container {
+    display: block !important;      /* 1. INDISPENSABLE pour que le scroll fonctionne */
+    width: 100% !important;
+    height: 300px !important;       /* 2. On augmente la fenêtre de vue */
+    max-height: 300px !important;
+    overflow-y: scroll !important;  /* 3. On force l'axe de défilement */
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-radius: 10px;
+    padding: 15px 15px 100px 15px !important; /* 4. ÉNORME padding en bas pour pouvoir remonter la fin */
+    margin: 10px 0 !important;
+    border: 1px solid rgba(0, 161, 224, 0.3);
+    -webkit-overflow-scrolling: touch; /* Fluidité tablette */
+}
+
+/* Ligne spécifique pour le rang éloigné (ex: #45) */
+.highlight-rank {
+    border: 2px solid var(--white) !important;
+    background: rgba(0, 161, 224, 0.5) !important;
+    margin-top: 5px;
+    animation: pulse-border 2s infinite; /* Petite animation pour la repérer */
+}
+
+/* On force chaque ligne à garder sa taille réelle */
+.leaderboard-row {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px !important;
+    margin-bottom: 8px !important;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 50px !important;       /* 5. Hauteur fixe par ligne */
+    min-height: 50px !important;
+    flex-shrink: 0 !important;      /* 6. Empêche l'écrasement */
+}
+
+/* Équipe actuelle */
+.current-team-row {
+    background: rgba(0, 161, 224, 0.3) !important;
+    border: 2px solid var(--white) !important;
+}
+
+/* Animation spécifique pour repérer sa position hors Top 5 */
+.highlight-rank {
+    animation: pulse-rank 2s infinite;
+}
+.pulse-row {
+    animation: pulse-rank 2s infinite;
+}
+
+@keyframes pulse-rank {
+    0%, 100% { box-shadow: 0 0 5px var(--sky); }
+    50% { box-shadow: 0 0 15px var(--gold); }
+}
+
+.leaderboard-separator {
+    text-align: center;
+    color: var(--sky);
+    font-weight: 800;
+    padding: 15px 0;
+    font-size: 1.5rem;
+    height: 40px;
+    flex-shrink: 0 !important;
+}
+
+/* Rendre la scrollbar visible sur tablette pour montrer qu'on peut scroller */
+#leaderboard-container::-webkit-scrollbar {
+    width: 8px;
+    background: rgba(0,0,0,0.2);
+}
+#leaderboard-container::-webkit-scrollbar-thumb {
+    background: var(--sky);
+    border-radius: 10px;
+}
+
+/* --- BOUTONS DU BAS (ALIGNE ET NET) --- */
+#screen-team-score div[style*="display: flex; gap: 10px; width: 100%;"] {
+    gap: 15px !important;
+    justify-content: center !important;
+}
+
+#screen-team-score .btn-main {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 8px 5px !important;
+    font-size: 0.65rem !important; /* Texte plus petit pour que ça rentre */
+    margin: 0 !important;
+    height: 40px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Couleur spécifique pour l'export pour le distinguer */
+.btn-export-csv {
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+}
+
+/* Réduction de la zone de stats pour gagner de la place */
+.stats-grid {
+    margin: 5px 0 !important;
+    padding: 8px !important;
+    gap: 5px !important;
+}
+
+/* Boutons spécifiques (Nettoyer/Effacer) */
+#screen-team-score .btn-main[onclick*="location.reload"] {
+    border-color: var(--white) !important;
+    color: var(--white) !important;
+}
+
+#screen-team-score .btn-main[onclick*="cleanTestScores"] {
+    border-color: var(--sky) !important;
+    color: var(--sky) !important;
+}
+
+#screen-team-score .btn-main[onclick*="clearLeaderboard"] {
+    border-color: var(--danger) !important;
+    color: var(--danger) !important;
+}
+
+/* Effet au survol des boutons */
+#screen-team-score .btn-main:hover {
+    transform: none !important; /* Pas d'animation de mouvement */
+    opacity: 0.8;
+}
+
+.rules-main-title {
+    color: #ffcc00; /* Le Gold Airbus */
+    font-size: 2.4rem;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 10px 0;
+}
+
+/* Le dégradé sous le titre */
+.rules-separator-gradient {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--sky), transparent);
+    margin-bottom: 30px;
+}
+
+/* Grille à 2 colonnes */
+.rules-grid-new {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Design des cartes individuelles */
+.rule-card-new {
+    background: rgba(0, 32, 91, 0.5);
+    border: 2px solid var(--gold);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.rule-card-new:hover {
+    transform: translateY(-3px);
+    background: rgba(0, 32, 91, 0.8);
+}
+
+/* Style de la carte Combo (Optionnel : pour qu'elle brille un peu plus) */
+.gold-highlight {
+    box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.2);
+}
+
+/* Icônes à gauche */
+.rule-icon-box {
+    font-size: 2.5rem;
+    min-width: 60px;
+    text-align: center;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+}
+
+/* Textes dans les cartes */
+.rule-text-box h3 {
+    color: var(--gold);
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.rule-text-box p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #e0e0e0;
+    border: none !important; /* On retire les bordures gauches du code précédent */
+    padding: 0 !important;
+}
+
+/* Couleurs spécifiques pour le score */
+.txt-green { color: var(--success); }
+.txt-red { color: var(--danger); }
+
+/* Adaptabilité mobile */
+@media (max-width: 768px) {
+    .rules-grid-new {
+        grid-template-columns: 1fr;
+    }
+    .rules-main-title {
+        font-size: 1.5rem;
+    }
+}
+
+
+
+/* Application du clignotement à TOUTES les icônes/smileys du manuel */
+
+
+/* On décale un peu les animations pour ne pas qu'elles soient toutes synchronisées (effet plus organique) */
+.rules-grid .rule-card:nth-child(2) .rule-icon-mini { animation-delay: 0.5s; }
+.rules-grid .rule-card:nth-child(3) .rule-icon-mini { animation-delay: 1s; }
+.rules-grid .rule-card:nth-child(4) .rule-icon-mini { animation-delay: 1.5s; }
+
+/* Réduction spécifique du bouton de transition finale */
+#screen-winner .btn-main {
+    font-size: 0.85rem !important; /* Taille d'écriture réduite */
+    padding: 10px 25px !important; /* Bouton moins haut et moins large */
+    letter-spacing: 1px !important; /* Espacement des lettres plus fin */
+    min-width: 180px;               /* Largeur minimum raisonnable */
+}
+
+
+/* --- STYLE DU BOUTON DÉCOLLAGE AVEC HÉLICOPTÈRES --- */
+.rules-btn-launch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Espace entre les hélicoptères et le texte */
+    min-width: 320px; /* Un peu plus large pour accueillir les icônes */
+    margin-top: 30px;
+    position: relative;
+    overflow: visible; /* Pour laisser l'animation dépasser légèrement */
+}
+
+/* Style commun aux icônes hélicoptères */
+.heli-icon {
+    font-size: 1.6rem; /* Taille adaptée au texte du bouton */
+    display: inline-block;
+   
+    /* ON REUTILISE L'ANIMATION EXISTANTE */
+    animation: smiley-blink 2.5s infinite ease-in-out;
+    will-change: opacity, transform, filter;
+}
+
+/* Petit ajustement de rotation pour le dynamisme (optionnel) */
+.heli-left {
+    transform: rotate(-10deg);
+}
+
+.heli-right {
+    transform: rotate(10deg);
+}
+
+/* --- AJUSTEMENT DE L'ANIMATION AU SURVOL DU BOUTON --- */
+/* Quand on survole le bouton, on accélère un peu le clignotement pour l'effet "prêt au départ" */
+.rules-btn-launch:hover .heli-icon {
+    animation-duration: 1s;
+    filter: drop-shadow(0 0 20px var(--gold)); /* Lueur or intense */
+}
+
+/* --- BOUTONS DU BILAN (PLUS FINS) --- */
+#screen-team-score .btn-main {
+    padding: 8px 20px !important;    /* Moins de hauteur et de largeur */
+    font-size: 0.75rem !important;   /* Texte plus petit */
+    min-width: 150px !important;     /* Largeur minimum raisonnable */
+    letter-spacing: 1px !important;  /* Espacement des lettres réduit */
+    height: auto !important;         /* On laisse le padding gérer la hauteur */
+    margin: 5px !important;          /* Un peu d'air entre les boutons */
+    border-width: 2px !important;    /* Bordure un peu plus fine */
+}
+
+/* Alignement de la zone des boutons */
+#screen-team-score div[style*="display: flex"] {
+    gap: 10px !important;
+    justify-content: center !important;
+    margin-top: 10px !important;
+}
+
+/* Effet au survol pour garder la cohérence Airbus */
+#screen-team-score .btn-main:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+}
+
+#final-team-points {
+    animation: score-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes score-pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Cache le bandeau des joueurs avec une transition */
+.hide-players-list {
+    display: none !important;
+}
+
+/* --- ANIMATION DE DÉCOLLAGE DES HÉLICOPTÈRES --- */
+
+/* --- ANIMATION DE DÉCOLLAGE SPECTACULAIRE DES HÉLICOPTÈRES (AIRBUS STYLE) --- */
+
+/* Classe activée par JS lors du clic */
+.rules-btn-launch.flying .heli-icon {
+    /* Désactive l'animation de clignotement par défaut s'il y en a une */
+    animation: none !important;
+   
+    /* MODIFICATION : On ralentit la durée (2s au lieu de 1s) */
+    /* On utilise cubic-bezier pour un départ lent et une accélération finale */
+    animation-duration: 1.5s !important;
+    animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+    animation-fill-mode: forwards !important;
+   
+    /* Assure que l'icône est au-dessus du texte pendant le vol */
+    z-index: 10;
+}
+
+/* --- TRAJECTOIRE PATROUILLE GAUCHE (Plus ample, plus lente, plus de zoom) --- */
+.rules-btn-launch.flying .heli-left {
+    animation-name: heli-takeoff-patrol-left !important;
+}
+
+/* TRAJECTOIRE GAUCHE : Écart vers l'extérieur puis retour */
+@keyframes heli-takeoff-patrol-left {
+    0% { transform: translate(0, 0) scale(1) rotate(-10deg); opacity: 1; }
+   
+    /* Écart vers la gauche (extérieur du cadre) */
+    40% { transform: translate(-120px, -40px) scale(1.4) rotate(-25deg); opacity: 1; }
+   
+    /* Point culminant sur le côté */
+    60% { transform: translate(-150px, -80px) scale(1.6) rotate(-30deg); opacity: 0.9; }
+   
+    /* Amorce du retour */
+    85% { transform: translate(-60px, -30px) scale(1.2) rotate(-15deg); opacity: 1; }
+   
+    /* Retour exact à la position initiale */
+    100% { transform: translate(0, 0) scale(1) rotate(-10deg); opacity: 1; }
+}
+
+/* --- TRAJECTOIRE PATROUILLE DROITE (Symétrique, même intensité) --- */
+.rules-btn-launch.flying .heli-right {
+    animation-name: heli-takeoff-patrol-right !important;
+}
+
+/* TRAJECTOIRE DROITE : Écart vers l'extérieur puis retour */
+@keyframes heli-takeoff-patrol-right {
+    0% { transform: translate(0, 0) scale(1) rotate(10deg); opacity: 1; }
+   
+    /* Écart vers la droite (extérieur du cadre) */
+    40% { transform: translate(120px, -40px) scale(1.4) rotate(25deg); opacity: 1; }
+   
+    /* Point culminant sur le côté */
+    60% { transform: translate(150px, -80px) scale(1.6) rotate(30deg); opacity: 0.9; }
+   
+    /* Amorce du retour */
+    85% { transform: translate(60px, -30px) scale(1.2) rotate(15deg); opacity: 1; }
+   
+    /* Retour exact à la position initiale */
+    100% { transform: translate(0, 0) scale(1) rotate(10deg); opacity: 1; }
+}
+
+/* Style pour la ligne "Votre Position" pour qu'elle ressorte bien */
+.current-team-row {
+    margin-top: 5px;
+    border: 2px solid var(--white) !important;
+    box-shadow: 0 0 15px rgba(0, 161, 224, 0.5);
+    position: sticky; /* L'équipe reste visible en bas si on scroll */
+    bottom: 0;
+    z-index: 10;
+}
+
+@keyframes pulse-border {
+    0% { border-color: var(--sky); }
+    50% { border-color: var(--white); }
+    100% { border-color: var(--sky); }
+}
+
+/* Texte à l'intérieur des lignes */
+#leaderboard-container div {
+    font-size: 0.85rem;
+    color: white;
+    font-weight: 500;
+}
+
+#leaderboard-container b {
+    color: var(--white);
+    letter-spacing: 1px;
+}
+
+/* --- COMPACTAGE DU BILAN --- */
+#screen-team-score .rules-container {
+    padding: 15px 25px !important;
+    justify-content: space-between !important;
+    max-height: 95vh !important; /* Force le respect du cadre */
+    gap: 5px !important;
+}
+
+#screen-team-score .rules-header {
+    margin-bottom: 5px !important;
+}
+
+#screen-team-score h1#final-team-points {
+    font-size: 3rem !important; /* Réduit un peu la taille du gros chiffre */
+    margin: 0 !important;
+}
+
+/* --- GRILLE DE BOUTONS HARMONISÉE (4 boutons) --- */
+.footer-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2x2 pour la stabilité sur tablette */
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Sur écran large, on les met tous sur une seule ligne */
+@media (min-width: 768px) {
+    .footer-buttons-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Bouton Export CSV discret */
+.btn-export {
+    font-size: 0.65rem !important;    /* Texte miniature */
+    padding: 5px 12px !important;    /* Padding très réduit */
+    min-width: 100px !important;     /* Largeur minimum faible */
+    height: auto !important;
+    margin: 10px auto !important;    /* Centrage horizontal */
+    opacity: 0.6;                    /* Très discret par défaut */
+    border: 1px solid var(--sky) !important; /* Bordure fine */
+    background: transparent !important;
+    display: block !important;       /* Pour le centrage avec margin: auto */
+    transition: all 0.3s ease;
+}
+
+.btn-export:hover {
+    opacity: 1;                      /* Devient net au survol */
+    background: rgba(0, 161, 224, 0.1) !important;
+    transform: scale(1.05);
+}
+
+@keyframes pulse-border {
+    0% { border-color: var(--sky); box-shadow: 0 0 5px rgba(0, 161, 224, 0.2); }
+    50% { border-color: var(--white); box-shadow: 0 0 15px rgba(0, 161, 224, 0.5); }
+    100% { border-color: var(--sky); box-shadow: 0 0 5px rgba(0, 161, 224, 0.2); }
+}
+
+/* ============================================================
+   SECTION VAINQUEUR : CORRECTION ET ALIGNEMENT
+   ============================================================ */
+
+/* Conteneur principal qui centre tout verticalement */
+.winner-hero-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    animation: zoomInGold 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+}
+
+/* 1. L'AVATAR */
+.winner-avatar-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.winner-img-main {
+    width: 110px !important;
+    height: 110px !important;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+    object-fit: contain;
+    padding: 5px;
+}
+
+/* La couronne au dessus de l'image */
+.winner-crown {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    font-size: 2.5rem !important;
+    filter: drop-shadow(0 0 10px var(--gold));
+    z-index: 10;
+}
+
+/* 2. LE BADGE DE TITRE (L'ENCADRÉ D'OR) */
+.player-badge {
+    background: linear-gradient(135deg, rgba(255, 204, 0, 0.15) 0%, rgba(0, 32, 91, 0.9) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 290px; /* Largeur fixe pour l'équilibre */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    text-align: left;
+}
+
+.badge-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.badge-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.badge-title {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.badge-desc {
+    color: white;
+    font-size: 0.7rem;
+    opacity: 0.9;
+    font-style: italic;
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
+/* 3. NOM ET TEXTES */
+#winner-name {
+    font-size: 2.2rem !important;
+    color: var(--gold);
+    font-weight: 800;
+    margin: 5px 0 !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+#screen-winner p {
+    font-size: 0.85rem !important;
+    margin-bottom: 10px !important;
+    opacity: 0.9;
+}
+
+/* 4. AJUSTEMENT DES BOUTONS DU BAS */
+#screen-winner .btn-main {
+    padding: 12px 25px !important;
+    font-size: 0.9rem !important;
+    min-width: 220px !important;
+    margin: 5px 0 !important;
+    border-radius: 30px !important;
+}
+
+/* 5. MENTION ÉQUIPAGE (SI PRÉSENT) */
+.team-distinction-card {
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed var(--sky);
+    border-radius: 12px;
+    padding: 12px;
+    width: 290px;
+}
+
+/* --- TRANSITION DU FOND DYNAMIQUE --- */
+body {
+    /* On ajoute une transition sur la couleur de fond pour que le passage au rouge soit fluide */
+    transition: background-color 1.5s ease-in-out;
+}
+
+
+
+@keyframes cockpit-shake {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+    40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+/* Cache complètement le footer sans laisser de traces de bordures */
+.hide-players-list {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Cache automatiquement le footer quand le header du duel apparaît */
+#screen-game:has(#duel-header[style*="display: block"]) #players-list,
+#screen-game:has(#duel-header[style*="display: flex"]) #players-list {
+    display: none !important;
+}
+
+/* Agrandi la zone de jeu quand le footer est masqué en finale */
+#screen-game:has(#duel-header:not([style*="display: none"])) .main-play-area {
+    margin-bottom: 20px;
+    height: calc(100vh - 150px); /* Utilise l'espace libéré par le footer */
+}
+
+@keyframes title-shimmer {
+    0% {
+        text-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+        filter: brightness(1);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(255, 204, 0, 0.9), 0 0 50px rgba(255, 255, 255, 0.4);
+        filter: brightness(1.3);
+    }
+    100% {
+        text-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+        filter: brightness(1);
+    }
+}
+
+
+/* --- SECTION DATA VIZ DÉBRIEFING --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    width: 100%;
+    margin: 10px 0;
+    background: rgba(0, 32, 91, 0.6);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--sky);
+}
+
+.theme-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.theme-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+.progress-bar-bg {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--sky);
+    width: 0%; /* Animé en JS */
+    transition: width 1.5s cubic-bezier(0.1, 0, 0.2, 1);
+}
+
+.theme-label-highlight {
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* --- BADGE DE POSITION --- */
+.rank-badge {
+    display: inline-block;
+    background: rgba(0, 161, 224, 0.1);
+    border: 1px solid var(--sky);
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rank-number {
+    color: var(--gold);
+    font-size: 1.1rem;
+}
+
+/* Style du bouton Fullscreen */
+#btn-fullscreen:hover {
+    opacity: 1 !important;
+    background: rgba(0, 161, 224, 0.2) !important;
+    border-color: var(--sky) !important;
+}
+
+/* Optionnel : masquer le bouton quand on est déjà en plein écran (si désiré) */
+/* :fullscreen #btn-fullscreen { display: none; } */
+
+/* Cache l'alerte de climat social pendant le duel, même si le JS essaie de l'afficher */
+#screen-game:has(#duel-header[style*="display: flex"]) #alert-overlay,
+#screen-game:has(#duel-header[style*="display: block"]) #alert-overlay {
+    display: none !important;
+}
+
+/* --- VRAIE POP-UP D'ERREUR INDÉPENDANTE --- */
+.error-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 8, 20, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 99999; /* S'assure d'être par-dessus tout le jeu */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInOverlay 0.3s ease-out forwards;
+}
+
+.error-modal-content {
+    background: var(--blue);
+    border: 3px solid var(--danger); /* Bordure rouge pour l'effet "Erreur critique" */
+    box-shadow: 0 0 50px rgba(255, 71, 87, 0.4), inset 0 0 20px rgba(255, 71, 87, 0.2);
+    border-radius: 20px;
+    padding: 40px;
+    width: 90%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: popupBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popupBounce {
+    0% { opacity: 0; transform: scale(0.8); }
+    70% { transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- MODAL SUR MESURE --- */
+.custom-modal-overlay {
+    display: none;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 8, 20, 0.85); backdrop-filter: blur(8px);
+    z-index: 100000;
+    justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.custom-modal-overlay.visible {
+    display: flex; opacity: 1;
+}
+.custom-modal-content {
+    background: var(--blue);
+    border: 3px solid var(--sky);
+    border-radius: 20px; padding: 30px;
+    width: 90%; max-width: 450px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 161, 224, 0.4);
+    transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.custom-modal-overlay.visible .custom-modal-content {
+    transform: scale(1);
+}

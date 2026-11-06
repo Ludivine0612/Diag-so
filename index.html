@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz Dialogue Social - Airbus Helicopters</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+
+
+<section id="screen-transition-finale" class="screen" style="background: radial-gradient(circle, var(--blue) 0%, #000 100%);">
+    <div class="glass-card duel-announcement" style="border-color: var(--gold); text-align: center; padding: 50px;">
+        <h1 style="color: var(--gold); font-size: 3rem; margin: 0; letter-spacing: 5px;">PLACE À LA FINALE</h1>
+        <div style="font-size: 5rem; margin: 20px 0;">⚔️</div>
+        <p id="finalists-names" style="font-size: 1.5rem; font-weight: bold; text-transform: uppercase;"></p>
+    </div>
+</section>
+
+
+<body style="margin: 0; padding: 0; height: 100vh; overflow: hidden;">
+<button id="btn-fullscreen" onclick="toggleFullScreen()" 
+            style="position: fixed; top: 10px; left: 10px; z-index: 10001; 
+                   background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+                   color: white; border-radius: 5px; cursor: pointer; padding: 5px 8px; 
+                   font-size: 0.7rem; opacity: 0.5; transition: opacity 0.3s;">
+        ⛶
+    </button>
+
+    <div class="airbus-logo-fixed" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <img src="logo.png" alt="Airbus Logo" style="width: 120px; height: auto;">
+    </div>
+
+
+<section id="screen-home" class="screen active">
+    <div class="hud-frame">
+       
+        <header class="airbus-header-hud">
+            <h1 class="airbus-title-v2">DIAG'SO</h1>
+            <div class="rules-line-v2"></div> <p class="airbus-slogan-v2">GARDEZ LE CONTRÔLE DU CLIMAT SOCIAL</p>
+        </header>
+
+
+        <div class="hologram-viewport">
+            <img src="dialogue-social.png" alt="Analyse Holographique" class="hologram-img">
+           
+            <div class="tech-grid-overlay"></div>
+           
+        </div>
+
+
+ <button class="btn-launch-v2" onclick="startApp()">
+    <span class="btn-tech-icon start-icon">⚡</span>
+    COMMENCER
+    <span class="btn-tech-icon end-icon">⚡</span>
+</button>
+
+
+    </div>
+</section>
+
+
+<div id="toast-notification" class="toast-hidden"></div>
+
+
+<div id="confetti-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></div>
+
+
+<section id="screen-rules" class="screen">
+    <div class="rules-container-new">
+        <header class="rules-header">
+            <h2 class="rules-main-title">MANUEL DE MISSION</h2>
+            <div class="rules-separator-gradient"></div>
+        </header>
+
+
+        <div class="rules-grid-new">
+            <div class="rule-card-new">
+                <div class="rule-icon-box">🌡️</div>
+                <div class="rule-text-box">
+                    <h3>CLIMAT SOCIAL</h3>
+                    <p>Maintenez la jauge au-dessus de <b>30%</b> pour éviter les tensions et la grève générale !</p>
+                </div>
+            </div>
+
+
+            <div class="rule-card-new gold-highlight">
+                <div class="rule-icon-box">🤩</div>
+                <div class="rule-text-box">
+                    <h3>ACCORD SIGNÉ (Combo)</h3>
+                    <p>Enchaînez <b>5 bonnes réponses</b> et cliquez sur <b>BANQUE</b> pour gagner <b>+5s</b> et sécuriser l'accord !</p>
+                </div>
+            </div>
+
+
+            <div class="rule-card-new">
+                <div class="rule-icon-box">🛡️</div>
+                <div class="rule-text-box">
+                    <h3>CLIMAT SAUVÉ (Sécurité)</h3>
+                    <p>Après une erreur, cliquez <b>sur BANQUE</b> avant la question suivante pour stabiliser le climat.</p>
+                </div>
+            </div>
+
+
+            <div class="rule-card-new">
+                <div class="rule-icon-box">🗳️</div>
+                <div class="rule-text-box">
+                    <h3>L'ÉLIMINATION</h3>
+                    <p>À chaque fin de manche, votez pour écarter le pilote qui déstabilise l'entreprise par ses erreurs.</p>
+                </div>
+            </div>
+
+
+            <div class="rule-card-new">
+                <div class="rule-icon-box">📈</div>
+                <div class="rule-text-box">
+                    <h3>SCORE D'ÉQUIPAGE</h3>
+                    <p>Réussite : <b class="txt-green">+10 pts</b> | Erreur : <b class="txt-red">-5 pts</b><br>
+                    Accord signé : <b class="txt-green">+20 pts</b> | Perdu : <b class="txt-red">-10 pts</b></p>
+                </div>
+            </div>
+
+
+            <div class="rule-card-new">
+                <div class="rule-icon-box">⚔️</div>
+                <div class="rule-text-box">
+                    <h3>FACE-À-FACE (DUEL)</h3>
+                    <p>Finale entre les 2 derniers pilotes. En cas d'égalité : <b>MORT SUBITE</b>, la 1ère erreur est fatale !</p>
+                </div>
+            </div>
+        </div>
+
+
+        <button class="btn-main rules-btn-launch" onclick="goToConfig()">
+    <span class="heli-icon heli-left">🚁</span>
+    DÉCOLLAGE
+    <span class="heli-icon heli-right">🚁</span>
+</button>
+    </div>
+</section>
+
+
+    <section id="screen-config" class="screen">
+        <div class="glass-card" style="max-width: 900px; width: 95%; padding: 30px; gap: 1.5rem; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column;">
+            <h2 style="font-size: 1.8rem; margin: 0;">Nombre de Joueurs</h2>
+           
+            <div class="counter-ui">
+                <button class="btn-circle" onclick="adjustPlayers(-1)">-</button>
+                <span id="player-count">3</span>
+                <button class="btn-circle" onclick="adjustPlayers(1)">+</button>
+            </div>
+
+
+            <div id="player-names-container" style="width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; overflow-y: auto; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 15px; flex-grow: 1;">
+            </div>
+
+
+            <button class="btn-main" style="width: 280px; flex-shrink: 0;" onclick="setupGame()">DIALOGUER !</button>
+        </div>
+    </section>
+
+
+    <section id="screen-game" class="screen">
+        <div class="game-layout" style="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; box-sizing: border-box;">
+           
+            <header class="game-header" style="flex: 0 0 auto; margin-bottom: 10px;">
+                <div id="round-label">Manche 1</div>
+                <div class="timer" id="timer">60</div>
+<div class="bank-mood-container">
+    <button class="btn-help-trigger" onclick="toggleHelpModal()">?</button>
+    <div style="font-size: 0.6rem; color: var(--sky); font-weight: 800; text-transform: uppercase; margin-bottom: 2px;">
+        État du climat social
+    </div>
+    <span id="total-mood" class="mood-emoji">😐</span>
+    <div id="q-remaining" style="font-size: 0.7rem; color: var(--gold); opacity: 0.8; margin-top: 2px;">Questions : --</div>
+</div>
+            </header>
+           
+            <div class="main-play-area" style="flex: 1 1 auto; overflow: hidden; display: flex; align-items: center; gap: 20px; min-height: 0;">
+   
+<div class="gauge-wrapper">
+    <span class="gauge-status-emoji status-top">🤩</span> 
+    <div class="gauge-container">
+        <div id="gauge-fill" class="gauge-fill"></div>
+        <div class="gauge-labels" id="gauge-labels"></div>
+    </div>
+    <span class="gauge-status-emoji status-bottom">😟</span> 
+    <div class="gauge-caption">CLIMAT SOCIAL</div>
+</div>
+   
+<div class="quiz-container" style="flex: 1; display: flex; flex-direction: column; height: 100%; min-height: 0;">
+    <div id="alert-overlay" class="alert-banner" style="display: none;">⚠️ ALERTE : CLIMAT SOCIAL CRITIQUE ⚠️</div>
+       <div id="duel-status-container" style="display: none; justify-content: space-around; width: 100%; margin-bottom: 10px; flex-shrink: 0;">
+        <div id="duel-p0-steps" class="duel-steps-row"></div>
+        <div id="duel-p1-steps" class="duel-steps-row"></div>
+    </div>
+
+    <div id="duel-header" class="duel-header" style="display: none;">
+    <div class="duel-p-card" id="duel-card-0">
+        <img src="" id="duel-img-0" class="duel-header-avatar">
+        <span id="duel-name-0"></span>
+    </div>
+    <div class="duel-vs-badge">VS</div>
+    <div class="duel-p-card" id="duel-card-1">
+        <span id="duel-name-1"></span>
+        <img src="" id="duel-img-1" class="duel-header-avatar">
+    </div>
+</div>
+
+
+    <div id="current-player-display" class="player-highlight" style="flex-shrink: 0;"></div>
+
+    <div class="question-box">
+        <p id="question-text">Chargement...</p>
+        <div id="options-grid" class="options-grid"></div>
+    </div>
+
+
+<div id="success-stats" style="font-size: 0.8rem; color: #f8f9fa; font-weight: bold;">% de bonnes réponses : 0%</div>
+<div id="chain-counter" style="font-size: 0.9rem; color: var(--gold); font-weight: 800; text-transform: uppercase; margin-top: 2px;">Série : 0 / 5</div>
+
+
+    <div style="display: flex; gap: 10px; flex-shrink: 0; padding-top: 10px;">
+        <button id="btn-pause" class="btn-option" style="flex: 1;" onclick="togglePause()">PAUSE</button>
+        <button class="btn-bank" onclick="bankMoney()" style="flex: 2;">BANQUE !</button>
+    </div>
+</div>
+            </div>
+               
+            <footer id="players-list" class="players-list" style="flex: 0 0 90px; margin-top: 15px; background: rgba(0,32,91,0.4); border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 5px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                </footer>
+        </div>
+    </section>
+
+
+<section id="screen-vote" class="screen">
+    <div class="glass-card" style="max-width: 95%; width: 95%; height: 90vh; justify-content: flex-start; padding: 20px;">
+       
+        <h2 class="danger" style="margin: 0 0 5px 0; font-size: 1.6rem;">ÉLIMINATION</h2>
+        <p style="margin: 0 0 15px 0; font-size: 0.9rem; opacity: 0.8;">Identifiez le maillon faible pour protéger la mission</p>
+       
+        <div id="vote-grid" class="vote-grid" style="width: 100%; display: grid; gap: 10px; overflow-y: auto; padding-bottom: 20px;">
+            </div>
+
+
+        <div style="background: linear-gradient(90deg, rgba(0, 161, 224, 0.2) 0%, rgba(0, 32, 91, 0.6) 100%);
+                    border: 1px solid var(--sky); border-radius: 15px; padding: 15px; margin-top: auto; margin-bottom: 10px; width: 100%; text-align: center;">
+            <p style="margin: 0; font-size: 0.95rem; line-height: 1.5; font-style: italic; color: var(--white);">
+                "La réussite d'Airbus Helicopters repose sur notre <b>force collective</b>. Un dialogue social de qualité, porté par des acteurs <b>formés et engagés</b>, est le seul levier pour garantir un climat social durable et performant."
+            </p>
+        </div>
+        </div> </section>
+
+
+<section id="screen-winner" class="screen">
+    <div class="glass-card">
+        <div id="winner-display"></div>
+        <h1 id="winner-name" style="color: var(--gold); font-size: 2.5rem; margin: 10px 0;"></h1>
+        <p>Vous êtes le Maillon Fort du Dialogue Social</p>
+       
+        <button class="btn-main"
+        style="background-color: var(--sky) !important;
+               border-color: var(--white);
+               margin-bottom: 10px;
+               font-size: 0.85rem;
+               padding: 10px 25px;
+               width: auto;
+               min-width: 200px;"
+        onclick="showTeamScore()">
+    POUR ALLER PLUS LOIN
+</button>
+       
+        <button class="btn-main" style="font-size: 1rem; opacity: 0.8;" onclick="stopApplause(); location.reload()">RETOUR ACCUEIL</button>
+    </div>
+</section>
+
+
+<section id="screen-team-score" class="screen">
+    <div class="rules-container" style="max-width: 800px; width: 95%; padding: 25px;">
+        <header class="rules-header">
+            <h2 class="rules-title">BILAN DE MISSION</h2>
+            <div class="rules-line"></div>
+        </header>
+
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <p>Score Collectif de l'Équipage :</p>
+            <h1 id="final-team-points" style="font-size: 4.5rem; color: var(--gold); margin: 5px 0;">0</h1>
+            <div id="team-performance-label" style="font-weight: 800; text-transform: uppercase; color: var(--sky);"></div>
+        </div>
+
+
+<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; font-weight: 800; font-size: 0.85rem; flex-wrap: wrap;">
+    <div style="color: var(--success);">RÉUSSITES : <span id="stat-total-correct">0</span></div>
+    <div style="color: var(--danger);">ERREURS : <span id="stat-total-wrong">0</span></div>
+    <div style="color: var(--gold);">ACCORDS BANQUÉS : <span id="stat-accords-saved">0</span></div>
+    <div style="color: #e67e22;">ACCORDS PERDUS : <span id="stat-accords-lost">0</span></div>
+</div>
+
+
+     </div>
+
+
+</section>
+
+
+    <div id="help-modal" class="modal-overlay" onclick="toggleHelpModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="toggleHelpModal()">×</button>
+        <h2 style="color: var(--gold); border-bottom: 2px solid var(--sky); padding-bottom: 10px; margin: 0; text-align: center;">📊 LÉGENDE DU BAROMÈTRE SOCIAL</h2>
+       
+        <div class="modal-grid-layout">
+            <div class="help-section danger-zone">
+                <p style="color: var(--danger);">🔴 ZONE CRITIQUE</p>
+                <ul>
+                    <div style="width: 100%; display: flex; justify-content: center;">
+    <div class="alert-banner">🚨 GRÈVE GÉNÉRALE 🚨</div>
+</div>
+                    <li><b>0-19% : 🚨 GRÈVE GÉNÉRALE</b><br>Arrêt complet. Échec de la mission.</li>
+                    <li><b>20-30% : ⚠️ RISQUE DE GRÈVE</b><br>Alerte maximum. Action vitale.</li>
+                </ul>
+            </div>
+
+
+            <div class="help-section tension-zone">
+                <p style="color: #e67e22;">🟠 ZONE DE TENSION</p>
+                <ul>
+                    <li><b>31-40% : 🟠 CLIMAT INSTABLE</b><br>Confiance effritée, débats difficiles.</li>
+                    <li><b>41-50% : 😤 SYNDICATS EN COLÈRE</b><br>Forte pression sur la direction.</li>
+                </ul>
+            </div>
+
+
+            <div class="help-section vigilance-zone">
+                <p style="color: var(--sky);">🟡 ZONE DE VIGILANCE</p>
+                <ul>
+                    <li><b>51-60% : 📢 MOUVEMENT D'HUMEUR</b><br>Manifestations locales. À stabiliser.</li>
+                    <li><b>61-70% : 📄 TRACT SYNDICAL</b><br>Revendications publiées. Dialogue actif.</li>
+                </ul>
+            </div>
+
+
+            <div class="help-section success-zone">
+                <p style="color: var(--success);">🟢 ZONE DE RÉUSSITE</p>
+                <ul>
+                    <li><b>71-85% : ✅ CLIMAT STABLE</b><br>Bonne entente. Opérations normales.</li>
+                    <li><b>86-100% : 🤩 EXCELLENT DIALOGUE</b><br>Synergie. Accords historiques.</li>
+                </ul>
+            </div>
+
+
+            <div class="help-footer">
+                <p style="margin: 0;">💡 <b>Conseil des Relations Sociales :</b> "En zone rouge, cliquez sur <b>BANQUE</b> dès votre prochaine bonne réponse pour stabiliser le climat !"</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="custom-modal-overlay" class="custom-modal-overlay">
+    <div class="custom-modal-content">
+        <h3 id="custom-modal-title" style="color: var(--gold); margin-top: 0; font-size: 1.5rem; letter-spacing: 2px;">Titre</h3>
+        <p id="custom-modal-message" style="color: white; font-size: 1rem; margin-bottom: 20px;"></p>
+        <input type="text" id="custom-modal-input" class="player-name-input" style="display: none; margin-bottom: 20px; width: 100%; border-color: var(--sky);" placeholder="Nom de l'équipage">
+        <div style="display: flex; gap: 15px; justify-content: center; width: 100%;">
+            <button id="custom-modal-cancel" class="btn-main" style="border-color: white; color: white; padding: 10px 20px; font-size: 0.9rem; min-width: 120px;">ANNULER</button>
+            <button id="custom-modal-confirm" class="btn-main" style="border-color: var(--gold); color: var(--gold); padding: 10px 20px; font-size: 0.9rem; min-width: 120px;">VALIDER</button>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
